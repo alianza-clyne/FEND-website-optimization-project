@@ -7,9 +7,11 @@
     <meta name="author" content=" FILL ME IN ">
     <title>Cameron Pittman: Portfolio</title>
 
-    <!-- Hmm, what is the impact of web fonts on speed? Measure it... -->
-
-    <link async defer href="//fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+    <!-- Since this Google font is render blocking, I will be using Web Font Loader to place this font
+  into a script tag towards the end of this file. -->
+    <!--
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+  -->
 
     <link href="css/style.css" rel="stylesheet">
     <link href="css/print.css" rel="stylesheet">
@@ -92,5 +94,19 @@
         <p>&copy; Web Performance 2014 <span id="crp-stats"></span></p>
       </footer>
     </div>
+
+    <!-- This allows me to use the Web Font Loader.
+    This gives me the power to ensure that the font 
+    loads asynchronously so that it does not render block.-->
+    <script async src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script>
+    WebFont.load({
+    google: {
+      families: ['Opem Sans', 'sans-serif']
+      }
+    });
+    </script>
+
   </body>
 </html>
+

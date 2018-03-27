@@ -89,6 +89,7 @@ Here's what this would look like in the index.html file.
 <link href="css/style.css" rel="stylesheet">
 
 ```
+
 ```css
 /* After CSS inline */
 <style>
@@ -143,4 +144,41 @@ footer span { float: right; font-style: italic; }
   header p { padding-left: 4.5em;}
 }
 </style>
+
+```
+```HTML
+## Step Five: It's Time For JavaScript to Move Out
+----------------------------------------------
+Currently, most of the JavaScript files are linked in the head of index.html. Since JavaScript controls the function of the site (instead of the visual representation as HTML and CSS do) and is render blocking, I have moved script tags for Google Analytics and js/perfmatters.js to the bottom of the body section.
+
+Here's what this would look like.
+
+```JavaScript
+/*  Before script tags are moved */
+<head>
+<script>
+  (function(w,g){w['GoogleAnalyticsObject']=g;
+  w[g]=w[g]||function(){(w[g].q=w[g].q||[]).push(arguments)};w[g].l=1*new Date();})(window,'ga');
+
+  // Optional TODO: replace with your Google Analytics profile ID.
+  ga('create', 'UA-XXXX-Y');
+  ga('send', 'pageview');
+</script>
+<script src="http://www.google-analytics.com/analytics.js"></script>
+<script async src="js/perfmatters.js"></script>
+</head>
+
+/*After script tags are moved*/
+<body>
+<script>
+  (function(w,g){w['GoogleAnalyticsObject']=g;
+  w[g]=w[g]||function(){(w[g].q=w[g].q||[]).push(arguments)};w[g].l=1*new Date();})(window,'ga');
+
+  // Optional TODO: replace with your Google Analytics profile ID.
+  ga('create', 'UA-XXXX-Y');
+  ga('send', 'pageview');
+</script>
+<script src="http://www.google-analytics.com/analytics.js"></script>
+<script async src="js/perfmatters.js"></script>
+</body>
 ```

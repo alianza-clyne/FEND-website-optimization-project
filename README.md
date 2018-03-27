@@ -69,3 +69,12 @@ Okay, just kidding! We will actually be using a media query that only allows the
   h2, h3{ page-break-after: avoid; }
 }
 ```
+I have also changed the media type in the print.css stylesheet link in index.html file so that it reflects this.
+
+```HTML
+<!-- Original stylesheet code -->
+<link href="css/print.css" rel="stylesheet">
+
+<!-- New code -->
+<link href="css/print.css" rel="stylesheet" media="print">
+```

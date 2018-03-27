@@ -78,3 +78,69 @@ I have also changed the media type in the print.css stylesheet link in index.htm
 <!-- New code -->
 <link href="css/print.css" rel="stylesheet" media="print">
 ```
+## Step Four: To or To Not Inline
+----------------------------------------------
+Now that css/print.css is no longer render blocking on all media types, we must take a look at css/style.css. This stylesheet contains styles that are meant to be used on all media types when they access index.html. Since the file only has 49 lines of code, I have decided to inline the css/style.css code in the index.html file. I will then comment out the link to the css/style.css file. This will allow the website to render faster.
+
+Here's what this would look like in the index.html file.
+
+```HTML
+<!-- Before CSS inline -->
+<link href="css/style.css" rel="stylesheet">
+
+```
+```css
+/* After CSS inline */
+<style>
+/* For optimization purposes, I have inlined the code in the css/style.css file.*/
+html {
+  font-size: 100%;
+  overflow-y: scroll;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: none;
+}
+body { margin: 0; font-size: 14px; line-height: 1.61; font-weight: 400; }
+body, button, input, select, textarea { font-family: 'Open Sans', sans-serif; color: #333; }
+
+a { color: #12C; }
+a:visited { color: #61C; }
+a:focus { outline: thin dotted; }
+a:hover, a:active { color: #c00; outline: 0; }
+
+b, strong { font-weight: bold; }
+pre, code { font-family: monospace, monospace; font-size: 1em; }
+ul, ol { margin: 1em 0; padding: 0 0 0 20px; }
+img { border: 0; max-width: 100%; }
+
+body { background: #fff; }
+header, footer, .container { max-width: 45em; margin: 0 auto; }
+
+header { padding: 0 0.5em; color: #C90B0B; }
+header img { border-radius: 40px; float: left; }
+header p { font-size:1.5em; font-weight: bold; padding-left: 4em;}
+header p span { font-size: 0.8em; font-weight: normal;}
+
+.hero { padding: 2em; background-color: #f8f8f8; font-size:1.2em;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+
+.content { padding: 1em 1em; }
+.content li { list-style-type: none; font-size: 1.1em;}
+li img { float:left; padding-right: 1em; }
+li p { font-size: 0.9em; font-style: italic; }
+
+footer {
+  padding: 0 0.5em;
+  border-top: 1px solid #ccc;
+}
+footer span { float: right; font-style: italic; }
+
+/* Smartphones (portrait) */
+@media only screen and (max-width: 480px) {
+  body { font-size: 12px;}
+  header p { padding-left: 4.5em;}
+}
+</style>
+```

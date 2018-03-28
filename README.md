@@ -149,7 +149,7 @@ footer span { float: right; font-style: italic; }
 ```HTML
 ## Step Five: It's Time For JavaScript to Move Out
 ----------------------------------------------
-Currently, most of the JavaScript files are linked in the head of index.html. Since JavaScript controls the function of the site (instead of the visual representation as HTML and CSS do) and is render blocking, I have moved script tags for Google Analytics and js/perfmatters.js to the bottom of the body section.
+Currently, most of the JavaScript files are linked in the head of index.html. Since JavaScript controls the function of the site (instead of the visual representation as HTML and CSS do) and is render blocking, I have moved script tags for Google Analytics and js/perfmatters-min.js to the bottom of the body section.
 
 Here's what this would look like.
 
@@ -165,7 +165,7 @@ Here's what this would look like.
   ga('send', 'pageview');
 </script>
 <script src="http://www.google-analytics.com/analytics.js"></script>
-<script async src="js/perfmatters.js"></script>
+<script async src="js/perfmatters-min.js"></script>
 </head>
 
 /*After script tags are moved*/
@@ -179,6 +179,10 @@ Here's what this would look like.
   ga('send', 'pageview');
 </script>
 <script src="http://www.google-analytics.com/analytics.js"></script>
-<script async src="js/perfmatters.js"></script>
+<script async src="js/perfmatters-min.js"></script>
 </body>
 ```
+
+### Added .htaccess file to set browser caching
+
+### Minify HTML using the HTML Minifier: http://kangax.github.io/html-minifier/

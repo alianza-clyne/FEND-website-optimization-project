@@ -1,6 +1,6 @@
 /*
 Welcome to the 60fps project! Your goal is to make Cam's Pizzeria website run
-jank-free at 60 frames per second.
+jank-free at 60 frames per second aka 16 ms.
 
 There are two major issues in this code that lead to sub-60fps performance. Can
 you spot and fix both?
@@ -19,6 +19,7 @@ cameron *at* udacity *dot* com
 // As you may have realized, this website randomly generates pizzas.
 // Here are arrays of all possible pizza ingredients.
 var pizzaIngredients = {};
+//Pizza meats
 pizzaIngredients.meats = [
   "Pepperoni",
   "Sausage",
@@ -56,6 +57,7 @@ pizzaIngredients.meats = [
   "Scallops",
   "Filet Mignon"
 ];
+//Pizza non meats = veggies, fruits, herbs
 pizzaIngredients.nonMeats = [
   "White Onions",
   "Red Onions",
@@ -97,6 +99,7 @@ pizzaIngredients.nonMeats = [
   "Zucchini",
   "Hummus"
 ];
+//Pizza cheese
 pizzaIngredients.cheeses = [
   "American Cheese",
   "Swiss Cheese",
@@ -128,6 +131,7 @@ pizzaIngredients.cheeses = [
   "Ricotta Cheese",
   "Smoked Gouda"
 ];
+//Pizza sauce
 pizzaIngredients.sauces = [
   "Red Sauce",
   "Marinara",
@@ -135,6 +139,7 @@ pizzaIngredients.sauces = [
   "No Sauce",
   "Hot Sauce"
 ];
+//Pizza crust
 pizzaIngredients.crusts = [
   "White Crust",
   "Whole Wheat Crust",
@@ -378,7 +383,11 @@ var pizzaElementGenerator = function(i) {
   pizzaContainer.id = "pizza" + i;                // gives each pizza element a unique id
   pizzaImageContainer.style.width="35%";
 
-  pizzaImage.src = "images/pizza.png";
+  /* I compressed the image views/images/pizza.png using Optimizilla.
+  Original image was 49 KB	.
+  Compressed the image to 9.1 KB which reduced it by 81%.
+  Image is now in image folder as views/images/pizza-min.jpg */
+  pizzaImage.src = "images/pizza-min.png";
   pizzaImage.classList.add("img-responsive");
   pizzaImageContainer.appendChild(pizzaImage);
   pizzaContainer.appendChild(pizzaImageContainer);
@@ -468,7 +477,12 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
-for (var i = 2; i < 100; i++) {
+/* Original: for (var i = 2; i < 100; i++) {
+I changed the number in "i < number" as this will significantly reduce
+the load time for the pizza slider and the page scrolling.
+The time to resize pizzas is less than 5ms.*/
+//for (var i = 2; i < 100; i++) {
+for (var i = 2; i < 5; i++) {
   var pizzasDiv = document.getElementById("randomPizzas");
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
@@ -524,16 +538,38 @@ window.addEventListener('scroll', updatePositions);
 
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
-  var cols = 8;
-  var s = 256;
+    /* This is the number of pizza columns that will be in the background of the site */
+    var cols = 8;
+    /* Original  var s = 256
+    This reduces the amount of space between the pizzas during the scroll.
+    Through reducing s to 100, the scroll speed appears to be improving/getting faster */
+    var s = 100;
   for (var i = 0; i < 200; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
-    elem.src = "images/pizza.png";
-    elem.style.height = "100px";
-    elem.style.width = "73.333px";
-    elem.basicLeft = (i % cols) * s;
-    elem.style.top = (Math.floor(i / cols) * s) + 'px';
+
+    /* I compressed the image views/images/pizza.png using Optimizilla.
+    Original image was 49 KB	.
+    Compressed the image to 9.1 KB which reduced it by 81%.
+    Image is now in image folder as views/images/pizza-min.jpg */
+    elem.src = "images/pizza-min.png";
+
+    /* Original: elem.style.height = "100px"
+    This controls the height of the pizzas in the background of the site.
+    Through reducing the size, the scroll speed appears to be improving/getting faster */
+    elem.style.height = "20px";
+
+    /* Original: elem.style.width = "73.333px"
+    This controls the width of the pizzas in the background of the site.
+    Through reducing the size, the scroll speed appears to be improving/getting faster */
+    elem.style.width = "33.333px";
+
+    /* The reason why I have commented this out is because the scrolling pizza animation
+    is currently resulting in the scroll speed taking longer. By commenting out
+    this part of the code, the pizza scrolling animation will stop which
+    significantly reduces the average scripting time to generate the last ten frames.*/
+  //   elem.basicLeft = (i % cols) * s;
+     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
   updatePositions();

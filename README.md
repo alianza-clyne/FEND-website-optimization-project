@@ -143,10 +143,9 @@ footer span { float: right; font-style: italic; }
   body { font-size: 12px;}
   header p { padding-left: 4.5em;}
 }
-</style>
-
+</style> 
 ```
-```HTML
+
 ## Step Five: It's Time For JavaScript to Move Out
 ----------------------------------------------
 Currently, most of the JavaScript files are linked in the head of index.html. Since JavaScript controls the function of the site (instead of the visual representation as HTML and CSS do) and is render blocking, I have moved script tags for Google Analytics and js/perfmatters-min.js to the bottom of the body section.

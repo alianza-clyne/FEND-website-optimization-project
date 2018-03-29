@@ -197,12 +197,14 @@ I also minified js/perfmatters.js using the [JavaScript Minifier](https://javasc
 ### Step Seven: The Final Product
 ----------------------------------------------
 Here's what the page speed of the index.html file looked like before these optimizations.
-![Image of mobile pagespeed before optimizations](optimizations/before-mobile)
-![Image of website pagespeed before optimizations](optimizations/before-website)
+![Image of mobile pagespeed before optimizations](https://image.ibb.co/jjxQKn/before_mobile.jpg)
+![Image of website pagespeed before optimizations](https://image.ibb.co/dqnQKn/before_website.jpg)
 
 Here's what the pagespeed of the index.html file looked like after these optimizations.
-![Image of mobile pagespeed after optimizations](optimizations/after-mobile)
-![Image of website pagespeed after optimizations](optimizations/after-website)
+![Image of mobile pagespeed after optimizations](https://image.ibb.co/eLzSX7/after_mobile.jpg)
+![Image of website pagespeed after optimizations](https://image.ibb.co/noNEC7/after_website.jpg)
+
+You can try it out for yourself by heading on over [Google Page Speed Insights](https://developers.google.com/speed/pagespeed/insights/) and entering https://alianza-clyne.github.io/website-optimization-project/ into the search box.
 
 ### Future Improvements: Leverage [Browser Caching](https://varvy.com/pagespeed/cache-control.html)
 ----------------------------------------------
@@ -230,5 +232,5 @@ In order to ensure the time needed to resize the pizzas (this is done by draggin
 ## The Final Product
 ----------------------------------------------
 According to the console, the frame rate while scrolling is 60 frames per second (approximately 16 ms) or less and the amount of time to resize the pizzas is less than 5 seconds.
-![Image showing 60 frames per second in console](optimizations/after-fps-scripting-time-2)
-![Image showing resize time in console](optimizations/after-fps-scripting-time-3)
+![Image showing 60 frames per second in console](https://image.ibb.co/j5inX7/after_fps_scripting_time_2.jpg)
+![Image showing resize time in console](https://image.ibb.co/e31wQS/after_fps_scripting_time_3.jpg)

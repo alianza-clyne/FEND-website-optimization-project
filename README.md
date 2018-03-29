@@ -1,9 +1,13 @@
 # Website Optimization Project
 
-For this project, I will be optimizing a website.
-The optimized site can be found here: https://alianza-clyne.github.io/website-optimization-project/
+Udacity has challenged me to optimize Cameron's portfolio website, and fix a few performance related issues on his pizzeria site. It was a long journey, but like the adventurous coder I am, I conquered it! See the following for the steps that I took to make the magic happen.
 
 # Section One: Optimize index.html
+In this section, I will be working to optimize index.html so that it reaches a [PageSpeed](https://developers.google.com/speed/pagespeed/insights/) score of 90%.
+
+You can view the original repository before my optimizations were applied to it on Udacity's Github [HERE](https://github.com/udacity/frontend-nanodegree-mobile-portfolio). Simply fork or download the repository and open up index.html.
+
+As an alternative, you can view the edited repository that contains all of the optimizations on Alianza's Github [HERE](https://github.com/alianza-clyne/website-optimization-project). Simply fork or download the repository and open up index.html.
 
 ## Step One: Optimize The Site's Images
 ----------------------------------------------
@@ -13,7 +17,7 @@ Believe it or not, as small as they are, the images on this site are currently t
 
 ## Step Two: Let Go Of That Render Blocking Web Font
 ----------------------------------------------
-Oh yes, you read that right. Linking Web fonts such as Google fonts in the head of your HTML file can actually result render blocking. This means that until the fonts has been loaded, the rest of site rendering is blocked. Nevertheless, there is a way around this!
+Oh yes, you read that right. Linking web fonts such as Google fonts in the head of your HTML file can actually result in render blocking. This means that until the fonts have been loaded, the rest of site rendering is blocked. Nevertheless, there is a way around this!
 
 Through using the [Web Font Loader](http://bit.ly/2DZjhJR), I was able to remove the Open Sans Google Font from the head of index.html, and put it in a Script tag. This gives me the power to ensure that the font loads asynchronously so that it does not render block.
 
@@ -23,7 +27,7 @@ See it for your self. Here's what the Google web font initially looked like when
 <link href="//fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
 ```
 
-To use the Web Font Loader instead, either remove the code above or comment it out, and then add the following script tags at the end of the index.html file.
+To use the Web Font Loader instead, either remove the code above or comment it out and then add the following script tags towards the end of the index.html file.
 
 ```javascript
 <script async src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
@@ -69,7 +73,7 @@ Okay, just kidding! We will actually be using a media query that only allows the
   h2, h3{ page-break-after: avoid; }
 }
 ```
-I have also changed the media type in the print.css stylesheet link in index.html file so that it reflects this.
+I have also changed the media type in the print.css stylesheet link in the index.html file so that it reflects this.
 
 ```HTML
 <!-- Original stylesheet code -->
@@ -80,7 +84,7 @@ I have also changed the media type in the print.css stylesheet link in index.htm
 ```
 ## Step Four: To or To Not Inline
 ----------------------------------------------
-Now that css/print.css is no longer render blocking on all media types, we must take a look at css/style.css. This stylesheet contains styles that are meant to be used on all media types when they access index.html. Since the file only has 49 lines of code, I have decided to inline the css/style.css code in the index.html file. I will then comment out the link to the css/style.css file. This will allow the website to render faster.
+Now that css/print.css is no longer render blocking on all media types, we must take a look at css/style.css. This stylesheet contains styles that are meant to be used for all media types when they access index.html. Since the file only has 49 lines of code, I have decided to inline the css/style.css code in the index.html file. I will then comment out the link to the css/style.css file. This will allow the website to render faster.
 
 Here's what this would look like in the index.html file.
 
@@ -182,6 +186,49 @@ Here's what this would look like.
 </body>
 ```
 
-### Added .htaccess file to set browser caching
+### Step Six: It's Minification Time
+----------------------------------------------
+Spaces in HTML, CSS, and JavaScript files can take up quite a bit of space and thus result in the site's optimization being reduced.
 
-### Minify HTML using the HTML Minifier: http://kangax.github.io/html-minifier/
+As a result, I minified index.html using the [HTML Minifier](http://kangax.github.io/html-minifier/). For the sake of preserving the readability of the HTML file, I changed the name of the original index.html file to index-unminified.html. I then created another file for the minified HTML and named it index.html.
+
+I also minified js/perfmatters.js using the [JavaScript Minifier](https://javascript-minifier.com/) and changed the file name to perfmatters-min.js to reflect this update.
+
+### Step Seven: The Final Product
+----------------------------------------------
+Here's what the page speed of the index.html file looked like before these optimizations.
+![Image of mobile pagespeed before optimizations](optimizations/before-mobile)
+![Image of website pagespeed before optimizations](optimizations/before-website)
+
+Here's what the pagespeed of the index.html file looked like after these optimizations.
+![Image of mobile pagespeed after optimizations](optimizations/after-mobile)
+![Image of website pagespeed after optimizations](optimizations/after-website)
+
+### Future Improvements: Leverage [Browser Caching](https://varvy.com/pagespeed/cache-control.html)
+----------------------------------------------
+In the future, I'd like to try utilizing browser caching in order to further optimize index.html.
+
+# Section Two: Removing the Jank From pizza.html
+For this section, I will be making optimizations to views/js/main.js which is linked to views/pizza.html. My goal is to ensure that views/pizza.html renders with a consistent frame-rate of 60 frames per second when I scroll through the site.
+
+Furthermore, I'd also like to ensure that the time needed to resize the pizzas in views/pizza.html is less than 5 ms. I will make this magic happen by making changes to the pizza size slider on the views/pizza.html page. The resize time will be shown in the Chrome browser's developer tools.
+
+You can view the original repository before my optimizations were applied to it on Udacity's Github [HERE](https://github.com/udacity/frontend-nanodegree-mobile-portfolio). Simply fork or download the repository and click on the "views" folder. Then open up pizza.html.
+
+As an alternative, you can view the edited repository that contains all of the optimizations on Alianza's Github [HERE](https://github.com/alianza-clyne/website-optimization-project). Simply fork or download the repository and click on the "views" folder. Then open up pizza.html.
+
+## Step One: Improve Frame Rate
+----------------------------------------------
+In order to improve the frame rate of views/pizza.html so that it renders at 60 frames per second (or approximately 16 milliseconds), I compressed the pizza.png image that appears in the background of the views/pizza.html site.
+
+I also edited the height and width of the pizzas in the background of the site, and I removed the pizza animation that takes place in the background when the page is scrolled. These steps resulted in the time to generate the pizzas and the average scripting time to generate the last ten frames while scrolling to less than 60 frames per second.
+
+## Step Two: Computational Efficiency--Resizing The Pizzas  
+----------------------------------------------
+In order to ensure the time needed to resize the pizzas (this is done by dragging the horizontal pizza mover) is less than 5 ms, I edited the for-loop that creates and appends the pizzas onto the page. This was done to ensure that fewer pizzas were appended to the page at one time and thus reduced the resize time. I also edited the space between the pizzas which further assisted with optimization.
+
+## The Final Product
+----------------------------------------------
+According to the console, the frame rate while scrolling is 60 frames per second (approximately 16 ms) or less and the amount of time to resize the pizzas is less than 5 seconds.
+![Image showing 60 frames per second in console](optimizations/after-fps-scripting-time-2)
+![Image showing resize time in console](optimizations/after-fps-scripting-time-3)

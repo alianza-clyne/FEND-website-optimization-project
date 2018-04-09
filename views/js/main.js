@@ -564,11 +564,11 @@ document.addEventListener('DOMContentLoaded', function() {
     Through reducing the size, the scroll speed appears to be improving/getting faster */
     elem.style.width = "33.333px";
 
-    /* The reason why I have commented this out is because the scrolling pizza animation
+    /* The reason why I had commented this out is because the scrolling pizza animation
     is currently resulting in the scroll speed taking longer. By commenting out
     this part of the code, the pizza scrolling animation will stop which
     significantly reduces the average scripting time to generate the last ten frames.*/
-  //   elem.basicLeft = (i % cols) * s;
+     elem.basicLeft = (i % cols) * s;
      elem.style.top = (Math.floor(i / cols) * s) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }

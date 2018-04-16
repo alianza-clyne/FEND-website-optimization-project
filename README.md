@@ -221,16 +221,58 @@ As an alternative, you can view the edited repository that contains all of the o
 
 ## Step One: Improve Frame Rate
 ----------------------------------------------
-In order to improve the frame rate of views/pizza.html so that it renders at 60 frames per second (or approximately 16 milliseconds), I compressed the pizza.png image that appears in the background of the views/pizza.html site.
+1. In order to improve the frame rate of views/pizza.html so that it renders at 60 frames per second (or approximately 16 milliseconds), I compressed the pizza.png image that appears in the background of the views/pizza.html site.
 
-I also edited the height and width of the pizzas in the background of the site, and I removed the pizza animation that takes place in the background when the page is scrolled. These steps resulted in the time to generate the pizzas and the average scripting time to generate the last ten frames while scrolling to less than 60 frames per second.
+2. I also replaced the document.querySelector with
+document.getElementById in the function changeSliderLabel(size) because using getElementById will
+ result in the element being fetched faster. This optimizes the website.
+
+3. I changed querySelector() to getElementById(). The reason for this is because using getElementById will result in the element being fetched faster and thus, the page will be more optimized. I applied this change to the function updatePositions().
+
+4. I have also chosen to reduce the amount of times that the
+  for loop in addEventListener() will be called/looped from 200 to 21. This will help to optimize the site when scrolling.
+
+Note: All optimizations have the word "Optimization" listed above them in the views/js/main.js document.
+
 
 ## Step Two: Computational Efficiency--Resizing The Pizzas  
 ----------------------------------------------
-In order to ensure the time needed to resize the pizzas (this is done by dragging the horizontal pizza mover) is less than 5 ms, I edited the for-loop that creates and appends the pizzas onto the page. This was done to ensure that fewer pizzas were appended to the page at one time and thus reduced the resize time. I also edited the space between the pizzas which further assisted with optimization.
+1. In order to ensure the time needed to resize the pizzas (this is done by dragging the horizontal pizza mover) is less than 5 ms, I  replaced the document.querySelector with document.getElementById in the functions changeSliderLabel(size), determineDx (elem, size) because using getElementById will result in the element being fetched faster. 
+
+2. I also removed document.querySelectorAll(".randomPizzaContainer") from the changePizzaSizes(size) function. The reason for this is because document.querySelectorAll(".randomPizzaContainer") is called multiple times in the function. Instead of having to constantly repeat this step, I felt it would be better to set document.querySelectorAll(".randomPizzaContainer") to be equal to the variable pizzaContainerItems so that going forward, I can simply call pizzaContainerItems which will assist with optimizing the pizza
+size slider. 
+
+On top of this, I replaced the document.querySelector with document.getElementsByClassName because using getElementsByClassName will
+result in the element being fetched faster.
+
+3.  I removed the following lines of code from the for loop in changePizzaSizes:
+
+    var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
+
+     AND
+
+    var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
+
+My reason for doing this is that here we are simply setting code to be equal to variables. Essentially, this is something that will always remain constant within the changePizzaSizes function and thus, there's no real benefit in keeping it in the for loop.
+Furthermore, keeping it in the for loop actually reduced the slider's optimization as it was constantly being forced to repeat these two unnecessary steps.
+
+I also replaced (document.querySelectorAll(".randomPizzaContainer") with the variable pizzaContainerItems. I did this because I have already set pizzaContainerItems to be equal to document.getElementsByClassName("randomPizzaContainer") which would almost be the equivalent to (document.querySelectorAll(".randomPizzaContainer").
+
+4. I changed the for loop in changePizzaSizes from
+    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++)
+    
+    to
+    
+    for (var i = 0, pLength = pizzaContainerItems.length; i < pLength; i++).
+
+Essentially, I replaced document.querySelectorAll(".randomPizzaContainer").length with pizzaContainerItems.length. To make this easier to call later, I have set pizzaContainerItems.length to equal the variable pLength.
+
+Then I set it so that the variable i is less than pLength like the original for loop.
+
+Note: All optimizations have the word "Optimization" listed above them in the views/js/main.js document.
 
 ## The Final Product
 ----------------------------------------------
 According to the console, the frame rate while scrolling is 60 frames per second (approximately 16 ms) or less and the amount of time to resize the pizzas is less than 5 seconds.
-![Image showing 60 frames per second in console](https://image.ibb.co/j5inX7/after_fps_scripting_time_2.jpg)
-![Image showing resize time in console](https://image.ibb.co/e31wQS/after_fps_scripting_time_3.jpg)
+![Image showing 60 frames per second in console](https://image.ibb.co/d8AnCS/after_fps_scripting_time_1.jpg)
+![Image showing resize time in console](https://image.ibb.co/ie0nCS/after_fps_scripting_time_2.jpg)

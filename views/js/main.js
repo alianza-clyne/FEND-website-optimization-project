@@ -1,16 +1,12 @@
 /*
 Welcome to the 60fps project! Your goal is to make Cam's Pizzeria website run
-jank-free at 60 frames per second aka 16 ms.
-
+jank-free at 60 frames per second.
 There are two major issues in this code that lead to sub-60fps performance. Can
 you spot and fix both?
-
-
 Built into the code, you'll find a few instances of the User Timing API
 (window.performance), which will be console.log()ing frame rate data into the
 browser console. To learn more about User Timing API, check out:
 http://www.html5rocks.com/en/tutorials/webperformance/usertiming/
-
 Creator:
 Cameron Pittman, Udacity Course Developer
 cameron *at* udacity *dot* com
@@ -18,8 +14,8 @@ cameron *at* udacity *dot* com
 
 // As you may have realized, this website randomly generates pizzas.
 // Here are arrays of all possible pizza ingredients.
+//Pizza meat toppings
 var pizzaIngredients = {};
-//Pizza meats
 pizzaIngredients.meats = [
   "Pepperoni",
   "Sausage",
@@ -57,7 +53,7 @@ pizzaIngredients.meats = [
   "Scallops",
   "Filet Mignon"
 ];
-//Pizza non meats = veggies, fruits, herbs
+//Pizza non-meat toppings
 pizzaIngredients.nonMeats = [
   "White Onions",
   "Red Onions",
@@ -99,7 +95,7 @@ pizzaIngredients.nonMeats = [
   "Zucchini",
   "Hummus"
 ];
-//Pizza cheese
+//Pizza cheese toppings
 pizzaIngredients.cheeses = [
   "American Cheese",
   "Swiss Cheese",
@@ -131,7 +127,7 @@ pizzaIngredients.cheeses = [
   "Ricotta Cheese",
   "Smoked Gouda"
 ];
-//Pizza sauce
+//Pizza sauces
 pizzaIngredients.sauces = [
   "Red Sauce",
   "Marinara",
@@ -139,7 +135,7 @@ pizzaIngredients.sauces = [
   "No Sauce",
   "Hot Sauce"
 ];
-//Pizza crust
+//Pizza crusts
 pizzaIngredients.crusts = [
   "White Crust",
   "Whole Wheat Crust",
@@ -383,10 +379,15 @@ var pizzaElementGenerator = function(i) {
   pizzaContainer.id = "pizza" + i;                // gives each pizza element a unique id
   pizzaImageContainer.style.width="35%";
 
-  /* I compressed the image views/images/pizza.png using Optimizilla.
+  /*
+  Optimization:
+
+  I compressed the image views/images/pizza.png using Optimizilla.
   Original image was 49 KB	.
   Compressed the image to 9.1 KB which reduced it by 81%.
-  Image is now in image folder as views/images/pizza-min.jpg */
+  Image is now in image folder as views/images/pizza-min.jpg
+  */
+
   pizzaImage.src = "images/pizza-min.png";
   pizzaImage.classList.add("img-responsive");
   pizzaImageContainer.appendChild(pizzaImage);
@@ -412,16 +413,22 @@ var resizePizzas = function(size) {
   window.performance.mark("mark_start_resize");   // User Timing API function
 
   // Changes the value for the size of the pizza above the slider
+  /*
+  Optimization: I am replacing the document.querySelector with
+  document.getElementById because using getElementById will
+  result in the element being fetched faster. This optimizes the website.
+  Reference: https://www.sitepoint.com/community/t/getelementbyid-vs-queryselector/280663/5
+  */
   function changeSliderLabel(size) {
     switch(size) {
       case "1":
-        document.querySelector("#pizzaSize").innerHTML = "Small";
+        document.getElementById("pizzaSize").innerHTML = "Small";
         return;
       case "2":
-        document.querySelector("#pizzaSize").innerHTML = "Medium";
+        document.getElementById("pizzaSize").innerHTML = "Medium";
         return;
       case "3":
-        document.querySelector("#pizzaSize").innerHTML = "Large";
+        document.getElementById("pizzaSize").innerHTML = "Large";
         return;
       default:
         console.log("bug in changeSliderLabel");
@@ -433,7 +440,13 @@ var resizePizzas = function(size) {
    // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
   function determineDx (elem, size) {
     var oldWidth = elem.offsetWidth;
-    var windowWidth = document.querySelector("#randomPizzas").offsetWidth;
+    /*
+    Optimization: I am replacing the document.querySelector with
+    document.getElementById because using getElementById will
+    result in the element being fetched faster. This optimizes the website.
+    Reference: https://www.sitepoint.com/community/t/getelementbyid-vs-queryselector/280663/5
+    */
+    var windowWidth = document.getElementById("randomPizzas").offsetWidth;
     var oldSize = oldWidth / windowWidth;
 
     // Changes the slider value to a percent width
@@ -456,12 +469,84 @@ var resizePizzas = function(size) {
     return dx;
   }
 
+
+  /*
+  Optimization:
+
+  1. I removed document.querySelectorAll(".randomPizzaContainer") from
+  the changePizzaSizes(size) function. The reason for this is because
+  document.querySelectorAll(".randomPizzaContainer") is called
+  multiple times in the function. Instead of having to constantly
+  repeat this step, I felt it would be better to set
+  document.querySelectorAll(".randomPizzaContainer") to be equal to
+  the variable pizzaContainerItems so that going forward, I can simply
+  call pizzaContainerItems which will assist with optimizing the pizza
+  size slider.
+
+  2. I am replacing the document.querySelector with
+  document.getElementsByClassName because using getElementsByClassName will
+  result in the element being fetched faster. This optimizes the website.
+  Reference: https://www.sitepoint.com/community/t/getelementbyid-vs-queryselector/280663/5
+  */
+  var pizzaContainerItems = document.getElementsByClassName("randomPizzaContainer");
+
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
+    /*
+    Optimization:
+
+    1. I removed the following lines of code from the for loop in changePizzaSizes:
+    var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
+
+    AND
+
+    var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
+
+    My reason for doing this is that here we are simply setting
+    code to be equal to variables. Essentially, this is something that
+    will always remain constant within the changePizzaSizes function
+    and thus, there's no real benefit in keeping it in the for loop.
+    Furthermore, keeping it in the for loop actually reduced the
+    slider's optimization as it was constantly being forced to repeat
+    these two unnecessary steps.
+
+    2. I replaced (document.querySelectorAll(".randomPizzaContainer")
+    with the variable pizzaContainerItems. I did this because
+    I have already set pizzaContainerItems to be equal to
+    document.getElementsByClassName("randomPizzaContainer") which
+    would almost be the equivalent to
+    (document.querySelectorAll(".randomPizzaContainer").
+
+    3. I replaced the [i] with [0] because using [i] technically
+    would not work anymore as I haved removed it from the for loop
+    where the variable i was set to equal 0.
+    */
+    var dx = determineDx(pizzaContainerItems[0], size);
+    var newwidth = (pizzaContainerItems[0].offsetWidth + dx) + 'px';
+
+    /*
+    Optimization:
+
+    1. I changed the for loop from
+     for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++)
+    to for (var i = 0, pLength = pizzaContainerItems.length; i < pLength; i++).
+
+    Essentially, I replaced document.querySelectorAll(".randomPizzaContainer").length
+    with pizzaContainerItems.length. To make this easier to call later,
+    I have set pizzaContainerItems.length to equal the variable pLength.
+
+    Then I set it so that the variable i is less than pLength like the
+    original for loop.
+    */
+    // Save array length to local variable
+    for (var i = 0, pLength = pizzaContainerItems.length; i < pLength; i++) {
+      pizzaContainerItems[i].style.width = newwidth;
+      /*
     for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
       var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
       var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
       document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+      */
     }
   }
 
@@ -476,14 +561,24 @@ var resizePizzas = function(size) {
 
 window.performance.mark("mark_start_generating"); // collect timing data
 
+/*
+Optimization:
+1. I removed the following line of code from the for loop below:
+var pizzasDiv = document.getElementById("randomPizzas");
+
+My reason for doing this is that here we are simply setting
+code to be equal to variables. Essentially, this is something that
+will always remain constant and thus, there's no real benefit in
+keeping it in the for loop.
+Furthermore, keeping it in the for loop actually reduced the
+slider's optimization as it was constantly being forced to repeat
+these two unnecessary steps.
+*/
+
+var pizzasDiv = document.getElementById("randomPizzas");
+
 // This for-loop actually creates and appends all of the pizzas when the page loads
-/* Original: for (var i = 2; i < 100; i++) {
-I changed the number in "i < number" as this will significantly reduce
-the load time for the pizza slider and the page scrolling.
-The time to resize pizzas is less than 5ms.*/
-//for (var i = 2; i < 100; i++) {
-for (var i = 2; i < 5; i++) {
-  var pizzasDiv = document.getElementById("randomPizzas");
+for (var i = 2; i < 100; i++) {
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -510,17 +605,55 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
+/*
+Optimization:
+
+1. I removed the following line of code from the updatePositions() function below:
+var items = document.querySelectorAll('.mover');
+
+I moved it so that it is above the pdatePositions() function as it is Called
+multiple times within the function.
+
+2. I am replacing the document.querySelectorAll with
+document.getElementsByClassName because using getElementsByClassName will
+result in the element being fetched faster. This optimizes the website.
+Reference: https://www.sitepoint.com/community/t/getelementbyid-vs-queryselector/280663/5
+*/
+var items = document.getElementsByClassName('mover');
+
 // Moves the sliding background pizzas based on scroll position
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  var items = document.querySelectorAll('.mover');
-  for (var i = 0; i < items.length; i++) {
+  /*
+  Optimization:
+
+  1. I have removed the scrollTop variable from the for loop.
+  The reason for this is because this is a constant and as such,
+  there is no real benefit to keeping it in the loop.
+
+  2. I have also chosen to divide document.documentElement.scrollTop by 1250
+  as this is a step that is taken in the phase variable and
+  I will be removing that phase variable for the sake of optimization
+  */
+  var scrollTop = (document.documentElement.scrollTop || document.body.scrollTop) / 1250;
+
+  for (var i = 0, pLength = items.length; i < pLength; i++) {
     // document.body.scrollTop is no longer supported in Chrome.
-    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    var phase = Math.sin((scrollTop / 1250) + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    // var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    //var phase = Math.sin((scrollTop / 1250) + (i % 5));
+
+    /*
+    Optimization:
+
+    For the sake of optimization, I will be removing the phase variable.
+    Instead, I will be replacing it with the scrollTop variable and
+    portions of the phase variable.
+    */
+    // items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    items[i].style.left = items[i].basicLeft + 100 * Math.sin(scrollTop + (i % 5)) + 'px';
+
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -538,39 +671,50 @@ window.addEventListener('scroll', updatePositions);
 
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
-    /* This is the number of pizza columns that will be in the background of the site */
-    var cols = 8;
-    /* Original  var s = 256
-    This reduces the amount of space between the pizzas during the scroll.
-    Through reducing s to 100, the scroll speed appears to be improving/getting faster */
-    var s = 100;
-  for (var i = 0; i < 200; i++) {
-    var elem = document.createElement('img');
-    elem.className = 'mover';
+  var cols = 8;
+  var s = 256;
 
-    /* I compressed the image views/images/pizza.png using Optimizilla.
+  /*
+  Optimization:
+
+  For the sake of optimization, I have created a variable called
+  movingPizzas and set it equal to
+  var movingPizzas = document.getElementById("movingPizzas1");
+  This variable will be used in the for loop to append the pizzas.
+  */
+  var movingPizzas = document.getElementById("movingPizzas1");
+
+  /*
+  Optimization:
+
+  1. Instead of defining the variable elem within the for loop,
+  I have decided to define it when the for loop is created.
+
+  2. I have also chosen to reduce the amount of times that this
+  for loop will be called/looped from 200 to 21. This will help
+  to optimize the site when scrolling.
+  */
+  for (var i = 0, elem; i < 21; i++) {
+    // var elem = document.createElement('img');
+    elem = document.createElement('img');
+    elem.className = 'mover';
+    /*
+    Optimization:
+
+    I compressed the image views/images/pizza.png using Optimizilla.
     Original image was 49 KB	.
     Compressed the image to 9.1 KB which reduced it by 81%.
-    Image is now in image folder as views/images/pizza-min.jpg */
+    Image is now in image folder as views/images/pizza-min.jpg
+    */
     elem.src = "images/pizza-min.png";
-
-    /* Original: elem.style.height = "100px"
-    This controls the height of the pizzas in the background of the site.
-    Through reducing the size, the scroll speed appears to be improving/getting faster */
-    elem.style.height = "20px";
-
-    /* Original: elem.style.width = "73.333px"
-    This controls the width of the pizzas in the background of the site.
-    Through reducing the size, the scroll speed appears to be improving/getting faster */
-    elem.style.width = "33.333px";
-
-    /* The reason why I had commented this out is because the scrolling pizza animation
-    is currently resulting in the scroll speed taking longer. By commenting out
-    this part of the code, the pizza scrolling animation will stop which
-    significantly reduces the average scripting time to generate the last ten frames.*/
-     elem.basicLeft = (i % cols) * s;
-     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    elem.style.height = "100px";
+    elem.style.width = "73.333px";
+    elem.basicLeft = (i % cols) * s;
+    elem.style.top = (Math.floor(i / cols) * s) + 'px';
+    // document.querySelector("#movingPizzas1").appendChild(elem);
+    movingPizzas.appendChild(elem);  /* This is where we use the movingPizzas
+    variable that was created before the for loop*/
   }
   updatePositions();
 });
+

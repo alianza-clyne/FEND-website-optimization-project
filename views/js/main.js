@@ -652,7 +652,28 @@ function updatePositions() {
     portions of the phase variable.
     */
     // items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
-    items[i].style.left = items[i].basicLeft + 100 * Math.sin(scrollTop + (i % 5)) + 'px';
+
+    /*
+    Optimization:
+
+    Udacity Reviewer Tip--Due to the mod 5 operator, there are only
+    5 different values for the phase. Whichever the value of i, i%5
+    is always a value from 0 to 4. So, calculating phase values
+    inside the main loop is a waste of resources.
+
+    As a result, the best option is making two loops, one for
+    the phases (0 to 4) and the other for the positions (0 to items.length).
+    */
+
+  var phase = [];
+
+  for (var i = 0; i < 5; i++) {
+      phase.push(Math.sin(scrollTop + i) * 100);
+  }
+
+  for (var i = 0, max = items.length; i < max; i++) {
+      items[i].style.left = items[i].basicLeft + phase[i%5] + 'px';
+  }
 
   }
 
@@ -691,10 +712,10 @@ document.addEventListener('DOMContentLoaded', function() {
   I have decided to define it when the for loop is created.
 
   2. I have also chosen to reduce the amount of times that this
-  for loop will be called/looped from 200 to 21. This will help
+  for loop will be called/looped from 200 to 24. This will help
   to optimize the site when scrolling.
   */
-  for (var i = 0, elem; i < 21; i++) {
+  for (var i = 0, elem; i < 24; i++) {
     // var elem = document.createElement('img');
     elem = document.createElement('img');
     elem.className = 'mover';
@@ -717,4 +738,3 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   updatePositions();
 });
-

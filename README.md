@@ -204,7 +204,7 @@ Here's what the pagespeed of the index.html file looked like after these optimiz
 ![Image of mobile pagespeed after optimizations](https://image.ibb.co/eLzSX7/after_mobile.jpg)
 ![Image of website pagespeed after optimizations](https://image.ibb.co/noNEC7/after_website.jpg)
 
-You can try it out for yourself by heading on over [Google Page Speed Insights](https://developers.google.com/speed/pagespeed/insights/) and entering https://alianza-clyne.github.io/website-optimization-project/ into the search box.
+You can try it out for yourself by heading on over [Google Page Speed Insights](https://developers.google.com/speed/pagespeed/insights/) and entering https://alianza-clyne.github.io/FEND-website-optimization-project/ into the search box.
 
 ### Future Improvements: Leverage [Browser Caching](https://varvy.com/pagespeed/cache-control.html)
 ----------------------------------------------
